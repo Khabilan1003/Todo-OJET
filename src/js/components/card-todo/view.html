@@ -1,0 +1,19 @@
+<oj-list-item-layout class="oj-panel">
+    <div slot="leading">
+        <b><oj-bind-text value="[[$properties.todo_id]]"></oj-bind-text></b>
+    </div>
+    <div slot="secondary">
+        <b><oj-bind-text value="[[$properties.message]]"></oj-bind-text></b>
+    </div>
+    <div class="oj-flex" slot="action">
+        <div class="oj-sm-margin-1x">
+            <oj-button on-oj-action="[[deleteTask]]">
+                <span class="oj-ux-ico-delete-all 
+          oj-icon-color-danger"></span>
+            </oj-button>
+        </div>
+        <div class="oj-sm-margin-1x">
+            <oj-switch value="[[$properties.is_completed]]"></oj-switch>
+        </div>
+    </div>
+</oj-list-item-layout>

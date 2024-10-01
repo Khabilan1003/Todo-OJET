@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<!--
+ Copyright (c) 2014, 2024, Oracle and/or its affiliates.
+ Licensed under The Universal Permissive License (UPL), Version 1.0
+ as shown at https://oss.oracle.com/licenses/upl/
+ -->
+
+<!-- ************************ IMPORTANT INFORMATION ************************************
+  This web basic template is provided as an example of how to configure
+  a JET web application.  It contains the Oracle JET framework and a default
+  requireJS configuration file to show how JET can be setup in a common application.
+  This project template can be used in conjunction with demo code from the JET
+  website to test JET component behavior and interactions.
+
+  Any CSS styling with the prefix "demo-" is for demonstration only and is not
+  provided as part of the JET framework.
+
+  Please see the demos under Cookbook/Patterns/App Shell: Web and the CSS documentation
+  under Support/API Docs/Non-Component Styling on the JET website for more information on how to use
+  the best practice patterns shown in this template.
+
+  Aria Landmark role attributes are added to the different sections of the application
+  for accessibility compliance. If you change the type of content for a specific
+  section from what is defined, you should also change the role value for that
+  section to represent the appropriate content type.
+  ***************************** IMPORTANT INFORMATION ************************************ -->
+<html lang="en-us">
+
+<head>
+  <title>Oracle JET Starter Template - Web Basic</title>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1">
+  <link rel="icon" href="css/images/JET-Favicon-Red-32x32.png" type="image/x-icon" />
+
+  <!-- This is the main css file for the default theme -->
+  <!-- injector:theme -->
+  <!-- endinjector -->
+  <!-- This contains icon fonts used by the starter template -->
+  <link rel="stylesheet" id="uxiconFont"
+    href="https://static.oracle.com/cdn/fnd/gallery/2404.0.0/images/iconfont/ojuxIconFont.min.css">
+
+  <!-- This is where you would add any app specific styling -->
+  <link rel="stylesheet" href="css/app.css" type="text/css" />
+
+</head>
+
+<body class="oj-web-applayout-body">
+  <div id="globalBody" class="oj-web-applayout-page">
+    <!--
+         ** Oracle JET V16.0.0 web application header pattern.
+         ** Please see the demos under Cookbook/Patterns/App Shell: Web
+         ** and the CSS documentation under Support/API Docs/Non-Component Styling
+         ** on the JET website for more information on how to use this pattern.
+      -->
+    <header role="banner" class="oj-web-applayout-header">
+      <div class="oj-web-applayout-max-width oj-flex-bar oj-sm-align-items-center">
+        <div class="oj-flex-bar-middle oj-sm-align-items-baseline">
+          <span role="img" class="oj-icon demo-oracle-icon" title="Oracle Logo" alt="Oracle Logo"></span>
+          <h1 class="oj-sm-only-hide oj-web-applayout-header-title" title="Application Name">
+            <oj-bind-text value="[[appName]]"></oj-bind-text>
+          </h1>
+        </div>
+        <div class="oj-flex-bar-end">
+          <!-- Responsive Toolbar -->
+          <oj-toolbar>
+            <oj-menu-button id="userMenu" display="[[smScreen() ? 'icons' : 'all']]" chroming="borderless">
+              <span>
+                <oj-bind-text value="[[userLogin]]"></oj-bind-text>
+              </span>
+              <span slot="endIcon"
+                :class="[[{'oj-icon demo-appheader-avatar': smScreen(), 'oj-component-icon oj-button-menu-dropdown-icon': !smScreen()}]]"></span>
+              <oj-menu id="menu1" slot="menu">
+                <oj-option id="pref" value="pref">Preferences</oj-option>
+                <oj-option id="help" value="help">Help</oj-option>
+                <oj-option id="about" value="about">About</oj-option>
+                <oj-option id="out" value="out">Sign Out</oj-option>
+              </oj-menu>
+            </oj-menu-button>
+          </oj-toolbar>
+        </div>
+      </div>
+    </header>
+
+    <div role="main" class="oj-web-applayout-max-width oj-web-applayout-content">
+      <h3>Add Todo</h3>
+      <oj-validation-group id="tracker" valid="{{groupValid}}" class="oj-sm-padding-0 oj-sm-margin-0">
+        <oj-c-form-layout max-columns="3" direction="row">
+          <oj-c-input-text value="{{todoMessage}}" label-hint="Todo Message" placeholder="Enter Todo Message"
+            required="true"></oj-c-input-text>
+          <oj-input-date label-hint="Date" required="true" validators="[[[dateValidator]]]"></oj-input-date>
+          <oj-c-button id="add_todo" label="Add Todo" on-oj-action="[[addRow]]"></oj-c-button>
+        </oj-c-form-layout>
+      </oj-validation-group>
+      <hr>
+      <h3 class="oj-flex oj-sm-justify-content-center">Todo List</h3>
+      <div class="oj-flex oj-sm-justify-content-center">
+        <oj-select-single id="view_type" data="[[viewsDP]]" value="{{selectedView}}" label-hint="Data View">
+        </oj-select-single>
+      </div>
+      <oj-bind-if test="[[selectedView() == 'list']]">
+        <h4 class="oj-flex oj-sm-justify-content-center">List View</h4>
+        <oj-list-view id="contact_details" data="[[dataProvider]]">
+          <template slot="itemTemplate" data-oj-as="item">
+            <!-- <oj-list-item-layout class="oj-panel">
+                <div slot="leading">
+                  <b><oj-bind-text value="[[item.item.data.id]]"></oj-bind-text></b>
+                </div>
+                <div slot="secondary">
+                  <b><oj-bind-text value="[[item.item.data.message]]"></oj-bind-text></b>
+                </div>
+                <div class="oj-flex" slot="action">
+                  <div class="oj-sm-margin-1x">
+                    <oj-button on-oj-action="[[() => deleteTodo(item.item.data.id)]]">
+                      <span class="oj-ux-ico-delete-all 
+                      oj-icon-color-danger"></span>
+                    </oj-button>
+                  </div>
+                  <div class="oj-sm-margin-1x">
+                    <oj-switch value="[[item.item.data.isCompleted]]"></oj-switch>
+                  </div>
+                </div>
+              </oj-list-item-layout> -->
+            <card-todo todo_id="[[item.item.data.id]]" message="[[item.item.data.message]]"
+              is_completed="[[item.item.data.isCompleted]]" on_delete_todo="[[deleteTodo]]"></card-todo>
+          </template>
+        </oj-list-view>
+      </oj-bind-if>
+      <oj-bind-if test="[[selectedView() == 'table']]">
+        <h4 class="oj-flex oj-sm-justify-content-center">Table View</h4>
+        <div class="oj-flex oj-sm-justify-content-center ">
+          <oj-table id="table" aria-label="Todo Table" accessibility.row-header="depName"
+            class="oj-helper-text-align-center" data="[[dataProvider]]"
+            on-first-selected-row-changed="[[firstSelectedRowChangedListener]]" columns='[
+                              {"headerText": "Todo Id", "field": "id", "id": "todo_id"},
+                              {"headerText": "Todo Message", "field": "message", "id": "message"},
+                              {"headerText": "Is Completed", "field": "isCompleted", "id": "is_completed"}]'
+            selection-mode.row="single" first-selected-row="{{firstSelected}}"></oj-table>
+        </div>
+        <div>
+          <oj-c-form-layout class="oj-sm-margin-4x" max-columns="1" id="update_form" direction="row" class="">
+            <div class="oj-flex oj-sm-flex-direction-column">
+              <h5 class="oj-flex oj-sm-justify-content-center">Update Todo</h5>
+              <oj-c-input-text class="oj-sm-width-full" id="update_id_field" label-hint="Id"
+                value="[[selected_todo_id]]" disabled="true" placeholder="id"></oj-c-input-text>
+              <oj-c-input-text class="oj-sm-width-full" id="update_message_field" label-hint="Message"
+                value="{{selected_message}}" placeholder="message"></oj-c-input-text>
+              <oj-select-single id="view_type" data="[[todoIsCompletedDP]]" value="{{selected_is_completed}}"
+                label-hint="Data View">
+              </oj-select-single>
+
+            </div>
+          </oj-c-form-layout>
+        </div>
+        <div class="oj-flex oj-sm-justify-content-center ">
+          <oj-c-button class="oj-sm-margin-4x" disabled="[[firstSelected() == null]]" id="updateTodo" label="Update"
+            on-oj-action="[[updateTodo]]"></oj-c-button>
+          <oj-c-button class="oj-sm-margin-4x" chroming="danger" disabled="[[firstSelected() == null]]" id="deleteTodo"
+            label="Delete" on-oj-action="[[() => deleteTodo(firstSelected().data.id)]]"></oj-c-button>
+
+        </div>
+      </oj-bind-if>
+
+    </div>
+
+    <footer class="oj-web-applayout-footer" role="contentinfo">
+      <div class="oj-web-applayout-footer-item oj-web-applayout-max-width">
+        <ul>
+          <oj-bind-for-each data="[[footerLinks]]">
+            <template>
+              <li>
+                <a :id="[[$current.data.linkId]]" :href="[[$current.data.linkTarget]]">
+                  <oj-bind-text value="[[$current.data.name]]"></oj-bind-text>
+                </a>
+              </li>
+            </template>
+          </oj-bind-for-each>
+        </ul>
+      </div>
+      <div
+        class="oj-web-applayout-footer-item oj-web-applayout-max-width oj-text-color-secondary oj-typography-body-sm">
+        Copyright © 2014, 2024 Oracle and/or its affiliates All rights reserved.
+      </div>
+    </footer>
+  </div>
+  <!-- This injects script tags for the main javascript files -->
+  <!-- injector:scripts -->
+  <!-- endinjector -->
+</body>
+
+</html>
