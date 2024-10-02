@@ -20,9 +20,9 @@
             "displayName": "message",
             "type": "string"
         },
-        "on_delete_todo": {
-            "description": "Function to delete a todo.",
-            "displayName": "on_delete_todo",
+        "open_update_todo_dialog": {
+            "description": "Function to display update todo dialog.",
+            "displayName": "open_update_todo_dialog",
             "type": "function"
         }
     }

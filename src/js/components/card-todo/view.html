@@ -6,14 +6,9 @@
         <b><oj-bind-text value="[[$properties.message]]"></oj-bind-text></b>
     </div>
     <div class="oj-flex" slot="action">
-        <div class="oj-sm-margin-1x">
-            <oj-button on-oj-action="[[deleteTask]]">
-                <span class="oj-ux-ico-delete-all 
-          oj-icon-color-danger"></span>
-            </oj-button>
-        </div>
-        <div class="oj-sm-margin-1x">
-            <oj-switch value="[[$properties.is_completed]]"></oj-switch>
-        </div>
+        <oj-button on-oj-action="[[$properties.open_update_todo_dialog]]">
+            <span class="oj-ux-ico-edit-box"></span>
+        </oj-button>
+
     </div>
 </oj-list-item-layout>

@@ -8,7 +8,7 @@
 /*
  * Your application specific code will go here
  */
-define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils', 'knockout', "ojs/ojarraydataprovider", "ojs/ojlistview", 'ojs/ojknockout', "ojs/ojswitch", "ojs/ojlistitemlayout", "oj-c/button", "oj-c/input-text", "oj-c/form-layout", "ojs/ojbutton", "ojs/ojcollapsible", "components/card-todo/loader", "ojs/ojvalidationgroup", "ojs/ojselectsingle", "ojs/ojtable", "ojs/ojdatetimepicker"],
+define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils', 'knockout', "ojs/ojarraydataprovider", "ojs/ojlistview", 'ojs/ojknockout', "ojs/ojswitch", "ojs/ojlistitemlayout", "oj-c/button", "oj-c/input-text", "oj-c/form-layout", "ojs/ojbutton", "ojs/ojcollapsible", "components/card-todo/loader", "ojs/ojvalidationgroup", "ojs/ojselectsingle", "ojs/ojtable", "ojs/ojdatetimepicker", "ojs/ojdialog"],
   function (Context, ResponsiveUtils, ResponsiveKnockoutUtils, ko, ArrayDataProvider) {
     function Todo(id, message, isCompleted) {
       this.id = id;
@@ -37,12 +37,24 @@ define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils
         { name: "Your Privacy Rights", id: "yourPrivacyRights", linkTarget: "http://www.oracle.com/us/legal/privacy/index.html" },
       ];
 
-      // Data Required for the App
-      this.todoMessage = ko.observable("");
+      // Dialog Handlers
+      this.openAddTodoDialog = function () {
+        document.getElementById("create_todo_dialog").open();
+      }
 
-      // Form Validation
-      this.groupValid = ko.observable();
+      this.closeAddTodoDialog = function () {
+        document.getElementById("create_todo_dialog").close();
+      }
 
+      this.openUpdateTodoDialog = function () {
+        document.getElementById("update_todo_dialog").open();
+      }
+
+      this.closeUpdateTodoDialog = function () {
+        document.getElementById("update_todo_dialog").close();
+      }
+
+      // Data for Todo List
       this.data = ko.observableArray([
         new Todo(1, "Todo 1", false),
         new Todo(2, "Todo 2", true),
@@ -55,61 +67,8 @@ define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils
         keyAttributes: 'id'
       });
 
-      this.addRow = () => {
-        const valid = checkValidationGroup();
-        if (!valid) return;
-
-        const new_id = this.data().length == 0 ? 1 : this.data()[this.data().length - 1].id + 1;
-        const todo = new Todo(new_id, this.todoMessage(), false);
-        this.data.push(todo);
-        this.todoMessage("");
-      }
-
-      // Table Related Things
-      this.firstSelected = ko.observable(null);
-
-      this.deleteTodo = (id) => {
-        this.firstSelected(null);
-        this.data.remove(function (todo) {
-          return todo.id == id;
-        });
-      }
-
-      // Data Model to select table or list view
-      this.views = [
-        { value: "list", label: "List View" },
-        { value: "table", label: "Table View" }
-      ];
-
-      this.viewsDP = new ArrayDataProvider(this.views, { keyAttributes: 'value' });
-
-      this.selectedView = ko.observable('table');
-
-      this.selected_todo_id = ko.observable();
-      this.selected_message = ko.observable();
-      this.selected_is_completed = ko.observable();
-
-      this.firstSelectedRowChangedListener = (event) => {
-        const itemContext = event.detail.value;
-        if (itemContext && itemContext.data) {
-          const todo = itemContext.data;
-          this.selected_todo_id(todo.id);
-          this.selected_message(todo.message());
-          this.selected_is_completed(todo.isCompleted());
-        }
-      };
-
-      this.isCompletedOptions = [
-        { value: true, label: "Completed" },
-        { value: false, label: "Not Completed" },
-      ]
-      this.todoIsCompletedDP = new ArrayDataProvider(this.isCompletedOptions, {
-        keyAttributes: 'value'
-      })
-
-      this.updateTodo = () => {
-        this.data.replace(this.firstSelected().data, new Todo(this.selected_todo_id(), this.selected_message(), this.selected_is_completed()));
-      }
+      // Create Todo
+      this.todoMessage = ko.observable("");
 
       const holidayMap = new Map();
       holidayMap.set(new Date("2024-01-13").getTime(), "Pongal");
@@ -126,6 +85,74 @@ define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils
         getHint: function () {
           return "Please don't select holidays";
         }
+      }
+
+      this.addTodo = (event) => {
+        const valid = checkValidationGroup();
+        if (!valid) return;
+
+        const new_id = this.data().length == 0 ? 1 : this.data()[this.data().length - 1].id + 1;
+        const todo = new Todo(new_id, this.todoMessage(), false);
+        this.data.push(todo);
+        this.todoMessage("");
+        this.closeDialog();
+      }
+
+      // Form Validation
+      this.groupValid = ko.observable();
+
+      // Table Related Things
+      this.firstSelected = ko.observable(null);
+
+      this.deleteTodo = (id) => {
+        this.firstSelected(null);
+        this.data.remove(function (todo) {
+          return todo.id == id;
+        });
+        this.closeUpdateTodoDialog();
+      }
+
+      // Data Model to select table or list view
+      this.views = [
+        { id: "list", label: "list" },
+        { id: "table", label: "table" }
+      ];
+      this.selectedView = ko.observable('table');
+
+      this.selected_todo_id = ko.observable();
+      this.selected_message = ko.observable();
+      this.selected_is_completed = ko.observable();
+
+      this.firstSelectedRowChangedListener = (event) => {
+        const itemContext = event.detail.value;
+        if (itemContext && itemContext.data) {
+          const todo = itemContext.data;
+          this.selected_todo_id(todo.id);
+          this.selected_message(todo.message());
+          this.selected_is_completed(todo.isCompleted());
+          this.openUpdateTodoDialog();
+        }
+      };
+
+      this.isCompletedOptions = [
+        { value: true, label: "Completed" },
+        { value: false, label: "Not Completed" },
+      ]
+      this.todoIsCompletedDP = new ArrayDataProvider(this.isCompletedOptions, {
+        keyAttributes: 'value'
+      })
+
+      this.updateTodo = () => {
+        this.data.replace(this.firstSelected().data, new Todo(this.selected_todo_id(), this.selected_message(), this.selected_is_completed()));
+        this.closeUpdateTodoDialog();
+      }
+
+      this.openUpdateTodoDialogForListView = (data) => {
+        this.selected_todo_id(data.id);
+        this.selected_message(data.message());
+        this.selected_is_completed(data.isCompleted());
+        this.firstSelected({ data: data });
+        this.openUpdateTodoDialog();
       }
     }
 
