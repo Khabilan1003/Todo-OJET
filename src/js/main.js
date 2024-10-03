@@ -50,11 +50,28 @@
         'proj4': 'libs/proj4js/dist/proj4-src',
         'touchr': 'libs/touchr/touchr'
         ,
+        'persist': 'libs/persist/debug',
         'chai': 'libs/chai/chai-4.3.10'
       }
       // endinjector
     }
   );
+  const localeOverride = window.localStorage.getItem("mylocale");
+  if (localeOverride) {
+    // set dir attribute on <html> element.
+    if (localeOverride === "ar-EG") {
+      document.getElementsByTagName('html')[0].setAttribute('dir', 'rtl');
+    } else {
+      document.getElementsByTagName('html')[0].setAttribute('dir', 'ltr');
+    }
+    requirejs.config({
+      config: {
+        ojL10n: {
+          locale: localeOverride,
+        },
+      },
+    });
+  }
 }());
 
 /**

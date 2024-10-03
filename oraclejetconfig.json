@@ -10,6 +10,7 @@
     },
     "staging": {
       "web": "web",
+      "hybrid": "hybrid",
       "themes": "staged-themes"
     }
   },
