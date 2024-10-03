@@ -1,0 +1,32 @@
+{
+  "name": "todo-list-item",
+  "version": "1.0.0",
+  "jetVersion": "^16.0.0",
+  "displayName": "A user friendly, translatable name of the component.",
+  "description": "A translatable high-level description for the component.",
+  "properties": {
+    "todo_id": {
+      "description": "Todo unique id.",
+      "displayName": "todo_id",
+      "type": "number"
+    },
+    "is_completed": {
+      "description": "Is todo completed.",
+      "displayName": "is_completed",
+      "type": "boolean"
+    },
+    "message": {
+      "description": "Todo message.",
+      "displayName": "message",
+      "type": "string"
+    },
+    "open_update_todo_dialog": {
+      "description": "Function to display update todo dialog.",
+      "displayName": "open_update_todo_dialog",
+      "type": "function"
+    }
+  },
+  "methods": {},
+  "events": {},
+  "slots": {}
+}

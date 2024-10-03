@@ -1,0 +1,24 @@
+<div>
+
+  <oj-select-single class="oj-sm-margin-4x-vertical" data="[[labelPositionsDP]]" value="{{labelPosition}}"
+    label-hint="enabled"></oj-select-single>
+
+  <oj-chart type="bar" orientation="[[orientationValue]]" stack="[[stackValue]]" data="[[dataProvider]]"
+    data-label="[[dataItemLabel]]" animation-on-display="auto" animation-on-data-change="auto" hover-behavior="dim">
+    <template slot="itemTemplate" data-oj-as="item">
+      <oj-chart-item value="[[item.data.value]]" group-id="[[ [item.data.group] ]]" series-id="[[item.data.series]]"
+        label="[[item.data.value.toString()]]" label-position="[[labelPosition]]"></oj-chart-item>
+    </template>
+  </oj-chart>
+
+  <div class="oj-flex oj-sm-flex-direction-column">
+    <h4>Switches to change chart structure</h4>
+    <div class="oj-flex-item">
+      <oj-switch class="oj-sm-margin-2x-horizontal" value="{{isStackOn}}" label-hint="Is Stack On">
+      </oj-switch>
+      <oj-switch class="oj-sm-margin-2x-horizontal" value="{{isOrientationVertical}}"
+        label-hint="Is Orientation Vertical">
+      </oj-switch>
+    </div>
+  </div>
+</div>

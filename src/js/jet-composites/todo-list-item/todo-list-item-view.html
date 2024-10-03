@@ -1,0 +1,14 @@
+<oj-list-item-layout class="oj-panel">
+  <div slot="leading">
+    <b><oj-bind-text value="[[$properties.todo_id]]"></oj-bind-text></b>
+  </div>
+  <div slot="secondary">
+    <b><oj-bind-text value="[[$properties.message]]"></oj-bind-text></b>
+  </div>
+  <div class="oj-flex" slot="action">
+    <oj-button on-oj-action="[[$properties.open_update_todo_dialog]]">
+      <span class="oj-ux-ico-edit-box"></span>
+    </oj-button>
+
+  </div>
+</oj-list-item-layout>

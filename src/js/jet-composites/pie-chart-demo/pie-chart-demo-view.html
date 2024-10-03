@@ -1,0 +1,25 @@
+<div class="oj-flex oj-sm-flex-direction-column oj-sm-align-items-center">
+  <h3 class="oj-flex-item">Pie Chart</h3>
+
+  <!-- Pie Chart -->
+  <oj-chart class="oj-flex-item" type="pie" data="[[dataProvider]]" animation-on-display="auto"
+    animation-on-data-change="auto" style-defaults.three-d-effect="[[threeDValue]]"
+    style-defaults.pie-inner-radius="0.6" pie-center.label="Center Label"
+    pie-center.label-style='{"fontSize":"23px","color":"#999999"}'
+    style-defaults.data-label-position="[[labelPosition]]" hover-behavior="dim">
+    <template slot="itemTemplate" data-oj-as="item">
+      >
+      <oj-chart-item value="[[item.data.value]]" group-id="[[ [item.data.group] ]]"
+        series-id="[[item.data.series]]"></oj-chart-item>
+    </template>
+  </oj-chart>
+
+  <!-- Drop down to select label type for pie chart -->
+  <oj-select-single class="oj-sm-width-full oj-md-width-2/3 oj-lg-width-1/5 oj-sm-margin-6x-vertical"
+    data="[[labelPositionsDP]]" value="{{labelPosition}}" label-hint="Label Display">
+  </oj-select-single>
+
+  <!-- Switch to change pie chart view -->
+  <oj-switch class="oj-flex-item" value="{{is3D}}" label-hint="Turn 3D View On">
+  </oj-switch>
+</div>

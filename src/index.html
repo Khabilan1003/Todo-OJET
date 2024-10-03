@@ -83,119 +83,12 @@
     </header>
 
     <div role="main" class="oj-web-applayout-max-width oj-web-applayout-content oj-scale-md">
-      <!-- Language Selection Button Set -->
-      <oj-buttonset-one id="formatsetWidth1" value="[[buttonVal]]" aria-label="Choose only one language"
-        chroming="borderless" class="oj-buttonset-width-auto" on-value-changed="[[setLang]]">
-        <oj-bind-for-each data="[[toolbarButtons]]">
-          <template>
-            <oj-option value="[[$current.data.label]]">
-              <span>
-                <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
-              </span>
-              <span slot="startIcon" :class="[[$current.data.iconClass + ' oj-ux-icon-size-4x']]"></span>
-            </oj-option>
-          </template>
-        </oj-bind-for-each>
-      </oj-buttonset-one>
-
-      <!-- Add Todo Dialog -->
-      <oj-dialog id="create_todo_dialog" dialog-title="Add Todo Dialog" aria-describedby="desc">
-        <!-- Dialog Header -->
-        <div slot="header"
-          class="oj-sm-width-full oj-flex oj-sm-flex-items-initial oj-sm-align-items-center oj-sm-justify-content-space-between">
-
-          <h3 class="oj-flex">
-            <oj-bind-text value="[[add_todo_text]]"></oj-bind-text>
-          </h3>
-
-          <!-- Close Add Todo Dialog -->
-          <oj-button display="icons" on-oj-action="[[closeAddTodoDialog]]">
-            <span slot="startIcon" class="oj-ux-ico-close"></span>
-            Close Add Todo Dialog
-          </oj-button>
-        </div>
-
-        <!-- Add Todo Form -->
-        <div class="oj-sm-padding-4x" slot="body">
-          <!-- Form Validator -->
-          <oj-validation-group id="tracker" valid="{{groupValid}}" class="oj-sm-padding-0 oj-sm-margin-0">
-            <oj-c-form-layout class="oj-form-control-full-width" max-columns="1" direction="row">
-              <!-- Todo Message Field -->
-              <oj-c-input-text class="oj-sm-width-full" value="{{todoMessage}}" label-hint="[[todo_message_text]]"
-                placeholder="[[enter_todo_message_text]]" required="true"></oj-c-input-text>
-
-              <!-- Todo Date Field -->
-              <oj-input-date label-hint="[[date_text]]" required="true"
-                validators="[[[dateValidator]]]"></oj-input-date>
-
-              <!-- Add Todo Button -->
-              <oj-c-button id="add_todo" label="[[add_todo_text]]" on-oj-action="[[addTodo]]"></oj-c-button>
-            </oj-c-form-layout>
-          </oj-validation-group>
-        </div>
-
-      </oj-dialog>
-
-      <!-- Update Todo Dialog -->
-      <oj-dialog id="update_todo_dialog" dialog-title="Update Todo Dialog" aria-describedby="desc">
-
-        <!-- Update Todo Dialog Header -->
-        <div slot="header"
-          class="oj-sm-width-full oj-flex oj-sm-flex-items-initial oj-sm-align-items-center oj-sm-justify-content-space-between">
-
-          <h3 class="oj-flex">
-            <oj-bind-text value="[[update_todo_text]]"></oj-bind-text>
-          </h3>
-
-          <!-- Close Update Todo Dialog -->
-          <oj-button display="icons" on-oj-action="[[closeUpdateTodoDialog]]">
-            <span slot="startIcon" class="oj-ux-ico-close"></span>
-            Close Update Todo Dialog
-          </oj-button>
-        </div>
-
-        <!-- Update Todo Form -->
-        <div slot="body">
-          <oj-c-form-layout class="" max-columns="1" id="update_form" direction="row" class="">
-            <div class="oj-flex oj-sm-flex-direction-column">
-              <oj-c-input-text class="oj-sm-width-full" id="update_id_field" label-hint="[[id_text]]"
-                value="[[selected_todo_id]]" disabled="true" placeholder="id"></oj-c-input-text>
-              <oj-c-input-text class="oj-sm-width-full" id="update_message_field" label-hint="[[todo_message_text]]"
-                value="{{selected_message}}" placeholder="message"></oj-c-input-text>
-              <oj-select-single id="view_type" data="[[todoIsCompletedDP]]" value="{{selected_is_completed}}"
-                label-hint="[[is_completed_text]]">
-              </oj-select-single>
-            </div>
-          </oj-c-form-layout>
-        </div>
-        <div slot="footer">
-          <oj-c-button class="oj-sm-margin-2x-horizontal" disabled="[[firstSelected() == null]]" id="updateTodo"
-            label="[[update_text]]" on-oj-action="[[updateTodo]]"></oj-c-button>
-          <oj-c-button class="oj-sm-margin-2x-horizontal" chroming="danger" disabled="[[firstSelected() == null]]"
-            id="deleteTodo" label="[[delete_text]]"
-            on-oj-action="[[() => deleteTodo(firstSelected().data.id)]]"></oj-c-button>
-        </div>
-      </oj-dialog>
-
-      <!-- Todo List Header -->
-      <div class="oj-flex oj-sm-justify-content-space-between oj-sm-align-items-center oj-sm-flex-items-initial">
-        <h3 class="oj-flex-item">
-          <oj-bind-text value="[[title_text]]"></oj-bind-text>
-        </h3>
-
-        <!-- Add Todo Button -->
-        <oj-c-button class="oj-flex-item" id="open_todo_dialog" label="[[add_todo_text]]"
-          on-oj-action="[[openAddTodoDialog]]">
-        </oj-c-button>
-      </div>
-
-      <!-- Button Set to set List View or Table View -->
-      <div class="oj-flex oj-sm-justify-content-center">
-        <oj-buttonset-one id="todo_list_view_buttonset" value="{{selectedView}}"
-          aria-label="Choose list or table view.">
-          <oj-bind-for-each data="[[views]]">
+      <div class="oj-sm-margin-4x-bottom">
+        <oj-buttonset-one id="formatsetWidth1" value="{{selectedAssignment}}" chroming="borderless"
+          class="oj-buttonset-width-auto">
+          <oj-bind-for-each data="[[assignments]]">
             <template>
-              <oj-option value="[[$current.data.id]]">
+              <oj-option value="[[$current.data.label]]">
                 <span>
                   <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
                 </span>
@@ -204,39 +97,172 @@
           </oj-bind-for-each>
         </oj-buttonset-one>
       </div>
+      <hr>
 
-      <!-- List View -->
-      <oj-bind-if test="[[selectedView() == 'list']]">
-        <h4 class="oj-flex oj-sm-justify-content-center">
-          <oj-bind-text value="[[list_view_text]]"></oj-bind-text>
-        </h4>
-        <oj-list-view id="contact_details" data="[[dataProvider]]">
-          <template slot="itemTemplate" data-oj-as="item">
-            <card-todo todo_id="[[item.item.data.id]]" message="[[item.item.data.message]]"
-              is_completed="[[item.item.data.isCompleted]]"
-              open_update_todo_dialog="[[() => openUpdateTodoDialogForListView(item.item.data)]]"></card-todo>
-          </template>
-        </oj-list-view>
-      </oj-bind-if>
+      <!-- Todo List -->
+      <oj-bind-if test="[[selectedAssignment() == `Todo`]]">
+        <!-- Language Selection Button Set -->
+        <oj-buttonset-one id="formatsetWidth1" value="[[buttonVal]]" aria-label="Choose only one language"
+          chroming="borderless" class="oj-buttonset-width-auto" on-value-changed="[[setLang]]">
+          <oj-bind-for-each data="[[toolbarButtons]]">
+            <template>
+              <oj-option value="[[$current.data.label]]">
+                <span>
+                  <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
+                </span>
+                <span slot="startIcon" :class="[[$current.data.iconClass + ' oj-ux-icon-size-4x']]"></span>
+              </oj-option>
+            </template>
+          </oj-bind-for-each>
+        </oj-buttonset-one>
 
-      <!-- Table View -->
-      <oj-bind-if test="[[selectedView() == 'table']]">
-        <h4 class="oj-flex oj-sm-justify-content-center">
-          <oj-bind-text value="[[table_view_text]]"></oj-bind-text>
-        </h4>
-        <div class="oj-flex oj-sm-justify-content-center oj-sm-width-full">
-          <oj-table id="table" aria-label="Todo Table" accessibility.row-header="depName"
-            class="oj-helper-text-align-center" data="[[dataProvider]]"
-            on-first-selected-row-changed="[[firstSelectedRowChangedListener]]" columns='[[todoTableColumns]]'
-            selection-mode.row="single" first-selected-row="{{firstSelected}}"></oj-table>
+        <!-- Add Todo Dialog -->
+        <oj-dialog id="create_todo_dialog" dialog-title="Add Todo Dialog" aria-describedby="desc">
+          <!-- Dialog Header -->
+          <div slot="header"
+            class="oj-sm-width-full oj-flex oj-sm-flex-items-initial oj-sm-align-items-center oj-sm-justify-content-space-between">
+
+            <h3 class="oj-flex">
+              <oj-bind-text value="[[add_todo_text]]"></oj-bind-text>
+            </h3>
+
+            <!-- Close Add Todo Dialog -->
+            <oj-button display="icons" on-oj-action="[[closeAddTodoDialog]]">
+              <span slot="startIcon" class="oj-ux-ico-close"></span>
+              Close Add Todo Dialog
+            </oj-button>
+          </div>
+
+          <!-- Add Todo Form -->
+          <div class="oj-sm-padding-4x" slot="body">
+            <!-- Form Validator -->
+            <oj-validation-group id="tracker" valid="{{groupValid}}" class="oj-sm-padding-0 oj-sm-margin-0">
+              <oj-c-form-layout class="oj-form-control-full-width" max-columns="1" direction="row">
+                <!-- Todo Message Field -->
+                <oj-c-input-text class="oj-sm-width-full" value="{{todoMessage}}" label-hint="[[todo_message_text]]"
+                  placeholder="[[enter_todo_message_text]]" required="true"></oj-c-input-text>
+
+                <!-- Todo Date Field -->
+                <oj-input-date label-hint="[[date_text]]" required="true"
+                  validators="[[[dateValidator]]]"></oj-input-date>
+
+                <!-- Add Todo Button -->
+                <oj-c-button id="add_todo" label="[[add_todo_text]]" on-oj-action="[[addTodo]]"></oj-c-button>
+              </oj-c-form-layout>
+            </oj-validation-group>
+          </div>
+
+        </oj-dialog>
+
+        <!-- Update Todo Dialog -->
+        <oj-dialog id="update_todo_dialog" dialog-title="Update Todo Dialog" aria-describedby="desc">
+
+          <!-- Update Todo Dialog Header -->
+          <div slot="header"
+            class="oj-sm-width-full oj-flex oj-sm-flex-items-initial oj-sm-align-items-center oj-sm-justify-content-space-between">
+
+            <h3 class="oj-flex">
+              <oj-bind-text value="[[update_todo_text]]"></oj-bind-text>
+            </h3>
+
+            <!-- Close Update Todo Dialog -->
+            <oj-button display="icons" on-oj-action="[[closeUpdateTodoDialog]]">
+              <span slot="startIcon" class="oj-ux-ico-close"></span>
+              Close Update Todo Dialog
+            </oj-button>
+          </div>
+
+          <!-- Update Todo Form -->
+          <div slot="body">
+            <oj-c-form-layout class="" max-columns="1" id="update_form" direction="row" class="">
+              <div class="oj-flex oj-sm-flex-direction-column">
+                <oj-c-input-text class="oj-sm-width-full" id="update_id_field" label-hint="[[id_text]]"
+                  value="[[selected_todo_id]]" disabled="true" placeholder="id"></oj-c-input-text>
+                <oj-c-input-text class="oj-sm-width-full" id="update_message_field" label-hint="[[todo_message_text]]"
+                  value="{{selected_message}}" placeholder="message"></oj-c-input-text>
+                <oj-select-single id="view_type" data="[[todoIsCompletedDP]]" value="{{selected_is_completed}}"
+                  label-hint="[[is_completed_text]]">
+                </oj-select-single>
+              </div>
+            </oj-c-form-layout>
+          </div>
+          <div slot="footer">
+            <oj-c-button class="oj-sm-margin-2x-horizontal" disabled="[[firstSelected() == null]]" id="updateTodo"
+              label="[[update_text]]" on-oj-action="[[updateTodo]]"></oj-c-button>
+            <oj-c-button class="oj-sm-margin-2x-horizontal" chroming="danger" disabled="[[firstSelected() == null]]"
+              id="deleteTodo" label="[[delete_text]]"
+              on-oj-action="[[() => deleteTodo(firstSelected().data.id)]]"></oj-c-button>
+          </div>
+        </oj-dialog>
+
+        <!-- Todo List Header -->
+        <div class="oj-flex oj-sm-justify-content-space-between oj-sm-align-items-center oj-sm-flex-items-initial">
+          <h3 class="oj-flex-item">
+            <oj-bind-text value="[[title_text]]"></oj-bind-text>
+          </h3>
+
+          <!-- Add Todo Button -->
+          <oj-c-button class="oj-flex-item" id="open_todo_dialog" label="[[add_todo_text]]"
+            on-oj-action="[[openAddTodoDialog]]">
+          </oj-c-button>
         </div>
+
+        <!-- Button Set to set List View or Table View -->
+        <div class="oj-flex oj-sm-justify-content-center">
+          <oj-buttonset-one id="todo_list_view_buttonset" value="{{selectedView}}"
+            aria-label="Choose list or table view.">
+            <oj-bind-for-each data="[[views]]">
+              <template>
+                <oj-option value="[[$current.data.id]]">
+                  <span>
+                    <oj-bind-text value="[[$current.data.label]]"></oj-bind-text>
+                  </span>
+                </oj-option>
+              </template>
+            </oj-bind-for-each>
+          </oj-buttonset-one>
+        </div>
+
+        <!-- List View -->
+        <oj-bind-if test="[[selectedView() == 'list']]">
+          <h4 class="oj-flex oj-sm-justify-content-center">
+            <oj-bind-text value="[[list_view_text]]"></oj-bind-text>
+          </h4>
+          <oj-list-view id="contact_details" data="[[dataProvider]]">
+            <template slot="itemTemplate" data-oj-as="item">
+              <todo-list-item todo_id="[[item.item.data.id]]" message="[[item.item.data.message]]"
+                is_completed="[[item.item.data.isCompleted]]"
+                open_update_todo_dialog="[[() => openUpdateTodoDialogForListView(item.item.data)]]"></todo-list-item>
+            </template>
+          </oj-list-view>
+        </oj-bind-if>
+
+        <!-- Table View -->
+        <oj-bind-if test="[[selectedView() == 'table']]">
+          <h4 class="oj-flex oj-sm-justify-content-center">
+            <oj-bind-text value="[[table_view_text]]"></oj-bind-text>
+          </h4>
+          <div class="oj-flex oj-sm-justify-content-center oj-sm-width-full">
+            <oj-table id="table" aria-label="Todo Table" accessibility.row-header="depName"
+              class="oj-helper-text-align-center" data="[[dataProvider]]"
+              on-first-selected-row-changed="[[firstSelectedRowChangedListener]]" columns='[[todoTableColumns]]'
+              selection-mode.row="single" first-selected-row="{{firstSelected}}"></oj-table>
+          </div>
+        </oj-bind-if>
       </oj-bind-if>
 
+      <!-- Bar Chart Demo -->
+      <oj-bind-if test="[[selectedAssignment() == `Bar Chart`]]">
+        <bar-chart-demo></bar-chart-demo>
+      </oj-bind-if>
+
+      <oj-bind-if test="[[selectedAssignment() == `Pie Chart`]]">
+        <pie-chart-demo></pie-chart-demo>
+      </oj-bind-if>
     </div>
-  </div>
-  <!-- This injects script tags for the main javascript files -->
-  <!-- injector:scripts -->
-  <!-- endinjector -->
+    <!-- This injects script tags for the main javascript files -->
+    <!-- injector:scripts -->
+    <!-- endinjector -->
 </body>
 
 </html>

@@ -9,7 +9,7 @@
  * Your application specific code will go here
 */
 
-define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils', 'knockout', "ojs/ojarraydataprovider", "ojs/ojtranslation", "ojs/ojhtmlutils", "ojL10n!resources/nls/menu", "ojs/ojlistview", 'ojs/ojknockout', "ojs/ojswitch", "ojs/ojlistitemlayout", "oj-c/button", "oj-c/input-text", "oj-c/form-layout", "ojs/ojbutton", "ojs/ojcollapsible", "components/card-todo/loader", "ojs/ojvalidationgroup", "ojs/ojselectsingle", "ojs/ojtable", "ojs/ojdatetimepicker", "ojs/ojdialog"],
+define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils', 'knockout', "ojs/ojarraydataprovider", "ojs/ojtranslation", "ojs/ojhtmlutils", "ojL10n!resources/nls/menu", "ojs/ojlistview", 'ojs/ojknockout', "ojs/ojswitch", "ojs/ojlistitemlayout", "oj-c/button", "oj-c/input-text", "oj-c/form-layout", "ojs/ojbutton", "ojs/ojcollapsible", "todo-list-item/loader", "bar-chart-demo/loader", "pie-chart-demo/loader", "ojs/ojvalidationgroup", "ojs/ojselectsingle", "ojs/ojtable", "ojs/ojdatetimepicker", "ojs/ojdialog"],
   function (Context, ResponsiveUtils, ResponsiveKnockoutUtils, ko, ArrayDataProvider, Translations, HtmlUtils, TranslationBundle) {
     function Todo(id, message, isCompleted) {
       this.id = id;
@@ -109,6 +109,19 @@ define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils
           "url": "fr/index.html"
         },
       ];
+
+      this.selectedAssignment = ko.observable("Todo");
+      this.assignments = [
+        {
+          "label": "Todo"
+        },
+        {
+          "label": "Bar Chart"
+        },
+        {
+          "label": "Pie Chart"
+        }
+      ]
       // Table Columns
       this.todoTableColumns = ko.computed(() => {
         return [
@@ -213,14 +226,8 @@ define(['ojs/ojcontext', 'ojs/ojresponsiveutils', 'ojs/ojresponsiveknockoututils
         let newLocale = "";
         let lang = evt.detail.value;
         switch (lang) {
-          case "Čeština":
-            newLocale = "cs-CZ";
-            break;
           case "Français":
             newLocale = "fr-FR";
-            break;
-          case "عربي":
-            newLocale = "ar-EG";
             break;
           default:
             newLocale = "en-US";

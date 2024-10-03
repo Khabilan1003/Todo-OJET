@@ -1,0 +1,22 @@
+/* This file is where css selectors for the component go.
+   There will be hard coded properties and properties controlled by variables, for example
+
+   bar-chart-demo .bar-chart-demo-value-text {
+   color: var(--bar-chart-demo-value-text-color);
+   display: inline-block;
+	 }
+*/
+
+bar-chart-demo:not(.oj-complete){
+  visibility: hidden;
+}
+
+bar-chart-demo{
+	min-height: 50px;
+	width: 50px;
+}
+
+bar-chart-demo[hidden]
+{
+  display: none;
+}

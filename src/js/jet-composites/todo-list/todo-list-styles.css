@@ -1,0 +1,22 @@
+/* This file is where css selectors for the component go.
+   There will be hard coded properties and properties controlled by variables, for example
+
+   todo-list .todo-list-value-text {
+   color: var(--todo-list-value-text-color);
+   display: inline-block;
+	 }
+*/
+
+todo-list:not(.oj-complete){
+  visibility: hidden;
+}
+
+todo-list{
+	min-height: 50px;
+	width: 50px;
+}
+
+todo-list[hidden]
+{
+  display: none;
+}
